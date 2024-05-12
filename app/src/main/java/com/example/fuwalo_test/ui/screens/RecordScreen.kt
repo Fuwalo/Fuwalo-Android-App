@@ -54,6 +54,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -247,9 +248,14 @@ fun Record(
 
                     ConvertButton(viewModel, context, selectedUri!!)
                 }
-                Log.d("Babak" , "recompose $isRecording ${recordedOutputFile.value}")
+                
                 if (!isRecording && recordedOutputFile.value.isNotEmpty()){
+                    Spacer(Modifier.height(150.dp))
                     ConvertButton(viewModel, context, File(recordedOutputFile.value).toUri())
+                }
+                if (isRecording){
+                    Spacer(Modifier.height(150.dp))
+                    Text(text = "Listening...", color = Color.White, fontSize = 30.sp)
                 }
             } else if (uiState is MidiViewModel.UiState.LOADING) {
                 Box(
@@ -323,12 +329,14 @@ fun Record(
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                val icon = if (isRecording) R.drawable.record_bottom_enabled else R.drawable.record_bottom
                 Image(
-                    painterResource(id = R.drawable.record_bottom),
+                    painterResource(id = icon),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()
                 )
+
 
                 Image(
                     painterResource(id = R.drawable.record_button_unselected),
